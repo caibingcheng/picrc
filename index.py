@@ -1,18 +1,45 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, send_from_directory, after_this_request
+from werkzeug.utils import secure_filename
+import os, time, hashlib
+
+from picen import picen
 
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def home():
+   return render_template('result.html')
 
-@app.route('/')
-def hello():
-    return 'Hello, world'
+@app.route('/', methods=['POST'])
+def enpost():
+    ifile = request.files.get('file')
+    psswd = request.form['password']
+    psswd = psswd if psswd else "123456"
+    if not ifile:
+        return 'invalid'
 
+    td = str(time.time())
+    m = hashlib.md5()
+    m.update((td + request.remote_addr).encode())
 
-@app.route('/test')
-def test():
-    return 'Test'
+    rdnid = m.hexdigest()
+    iname = secure_filename(ifile.filename)
+    sufix = os.path.splitext(iname)[-1]
 
-@app.route('/result')
-def result():
-   dict = {'phy':50,'che':60,'maths':70}
-   return render_template('result.html', result = dict)
+    sname = rdnid + '_' + iname
+    oname = rdnid + sufix
+
+    ifile.save(sname)
+    picen(psswd, sname, oname)
+    os.remove(sname)
+
+    @after_this_request
+    def delf(res):
+        if os.path.exists(oname):
+            os.remove(oname)
+        return res
+
+    return send_from_directory('', oname, as_attachment=True)
+
+if __name__ == "__main__":
+    app.run()

@@ -1,13 +1,10 @@
 <!doctype html>
 <html>
    <body>
-      <table border = 1>
-         {% for key, value in result.items() %}
-            <tr>
-               <th> {{ key }} </th>
-               <td> {{ value }} </td>
-            </tr>
-         {% endfor %}
-      </table>
+      <form method="post" enctype = 'multipart/form-data'>
+         <input type="file" name="file" placeholder='filename'>
+         <input type="password" name="password" placeholder='password'>
+         <input type="submit">
+     </form>
    </body>
 </html>
