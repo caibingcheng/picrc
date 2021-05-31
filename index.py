@@ -5,6 +5,7 @@ import os, time, hashlib
 from picen import picen
 
 app = Flask(__name__)
+HEADER = 'picrc_'
 
 @app.route('/', methods=['GET'])
 def home():
@@ -25,9 +26,10 @@ def enpost():
     rdnid = m.hexdigest()
     iname = secure_filename(ifile.filename)
     sufix = os.path.splitext(iname)[-1]
+    # sufix = '.picrc'
 
     sname = rdnid + '_' + iname
-    oname = rdnid + sufix
+    oname = HEADER + rdnid + sufix
 
     ifile.save(sname)
     picen(psswd, sname, oname)
