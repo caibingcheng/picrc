@@ -1,5 +1,3 @@
-# coding=utf-8
-
 class RC4():
 
     '''
@@ -43,7 +41,8 @@ class RC4():
     def start(self, data, skip=False):
         i, j = 0, 0
         for k in range(len(data)):
-            if skip and ((k + i + j) % 7 > 0): continue
+            if skip and ((k + i + j) % 7 > 0):
+                continue
             i = (i + 1) % 256
             j = (j + self.s_box[i]) % 256
             self.s_box[i], self.s_box[j] = self.s_box[j], self.s_box[i]

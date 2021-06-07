@@ -1,17 +1,8 @@
-from PIL import Image
+from utils.rc4 import RC4
 import numpy as np
 
-from rc4 import RC4
-
-'''
-参数：
-key 秘钥 1-256位长度
-src 源图片地址
-dst 输出加密图片地址
----
-该函数只可对单幅图片加密，不限图片大小及通道数
-'''
 # def picen(key, src, dst):
+#     from PIL import Image
 #     # image = cv2.imread(src)
 #     image = np.array(Image.open(src))
 
@@ -27,6 +18,7 @@ dst 输出加密图片地址
 
 #     Image.fromarray(image).save(dst)
 
+
 def picen(key, src, dst):
     with open(src, 'rb') as f:
         channel = np.array(list(f.read()), dtype=np.uint8)
@@ -37,13 +29,3 @@ def picen(key, src, dst):
         with open(dst, 'wb') as wf:
             wf.write(channel)
             wf.close()
-
-if __name__ == "__main__":
-    from sys import argv
-    if len(argv) < 3:
-        print("python PicEncrypt.py picture_path save_path key")
-
-    src = argv[1]
-    dst = argv[2]
-    key = argv[3]
-    picen(key, src, dst)

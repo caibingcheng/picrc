@@ -1,9 +1,11 @@
 {
-    "version": 2,
-    "builds": [
-        { "src": "index.py", "use": "@liudonghua123/now-flask" }
+    "rewrites": [
+        { "source": "/(.*)", "destination": "/api/index.py" }
     ],
-    "routes": [
-        { "src": "/(.*)", "dest": "/" }
-    ]
+    "functions": {
+        "api/index.py" : {
+            "includeFiles": ".*",
+            "excludeFiles": ".*"
+        }
+    }
 }
