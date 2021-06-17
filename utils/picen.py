@@ -19,13 +19,22 @@ import numpy as np
 #     Image.fromarray(image).save(dst)
 
 
-def picen(key, src, dst):
-    with open(src, 'rb') as f:
-        channel = np.array(list(f.read()), dtype=np.uint8)
-        f.close()
-        encrypter = RC4()
-        encrypter.init(key)
-        channel = np.array(encrypter.start(channel))
-        with open(dst, 'wb') as wf:
-            wf.write(channel)
-            wf.close()
+# def picen(key, src, dst):
+#     with open(src, 'rb') as f:
+#         channel = np.array(list(f.read()), dtype=np.uint8)
+#         f.close()
+#         encrypter = RC4()
+#         encrypter.init(key)
+#         channel = np.array(encrypter.start(channel))
+#         with open(dst, 'wb') as wf:
+#             wf.write(channel)
+#             wf.close()
+
+
+def picen(key, src):
+    channel = np.array(list(src), dtype=np.uint8)
+    encrypter = RC4()
+    encrypter.init(key)
+    channel = np.array(encrypter.start(channel))
+
+    return channel.tobytes()
